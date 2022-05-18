@@ -112,22 +112,25 @@ void	data_init(t_input *data, char *envp[])
 int	main(int argc, char *argv[], char *envp[])
 {
 	t_input data;
+	int		exit_status;
 
+	exit_status = 0;
 	if (argc != 1)
 		exit(EXIT_FAILURE);
 	(void) argv;
-	while (1)
+	signal(SIGINT, sigint_handler);
+	signal(SIGQUIT, sigint_handler);
+	while ((data.buf = readline("yo >")) > 0)
 	{
-		data.buf = readline("yo> ");
 		if (data.buf)
 			add_history(data.buf);
 		data_init(&data, envp);
-		if (ft_strncmp(data.buf, "exit", 5) == 0 || data.buf ==  EOF)
+		if (ft_strncmp(data.buf, "exit", 5) == 0)
 		{
 			// rl_clear_history(data.buf);
 			free(data.buf);
 			exit(EXIT_SUCCESS);
 		}
 	}
-	return (0);
+	return (EXIT_SUCCESS);
 }

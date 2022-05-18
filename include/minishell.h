@@ -39,6 +39,17 @@ enum tokens
 	PIPE		= 9
 };
 
+enum builtins
+{
+	BI_ECHO		= 1,
+	BI_CD 		= 2,
+	BI_PWD		= 3,
+	BI_EXPORT	= 4,
+	BI_UNSET	= 5,
+	BI_ENV		= 6,
+	BI_EXIT		= 7
+};
+
 typedef struct s_node
 {
 	int				type;
@@ -66,6 +77,8 @@ typedef struct s_input
 	int		status;
 }	t_input;
 
+// global var
+int						g_status;
 
 // allocation check
 void	alloc_check(char **str);
@@ -95,6 +108,9 @@ t_env	*ft_free_envp(t_env *node);
 // utils
 char	*ft_strndup(char const *str, size_t size);
 char	**ft_split_op(char const *s, char c);
+
+//signals
+void		sigint_handler(int sign_num);
 
 // minishell
 
