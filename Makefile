@@ -15,7 +15,9 @@ SRC_FILES	= minishell.c \
 				alloc_check.c \
 				ft_free.c \
 				ft_split_op.c \
-				signal.c
+				signal.c \
+				parsing_utils.c \
+				parsing.c
 SRCS		= ${notdir ${SRC_FILES}}
 
 OBJ_DIR		= objs

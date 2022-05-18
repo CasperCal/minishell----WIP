@@ -41,13 +41,14 @@ enum tokens
 
 enum builtins
 {
-	BI_ECHO		= 1,
-	BI_CD 		= 2,
-	BI_PWD		= 3,
-	BI_EXPORT	= 4,
-	BI_UNSET	= 5,
-	BI_ENV		= 6,
-	BI_EXIT		= 7
+	BI_ECHO		= 10,
+	BI_CD 		= 11,
+	BI_PWD		= 12,
+	BI_EXPORT	= 13,
+	BI_UNSET	= 14,
+	BI_ENV		= 15,
+	BI_EXIT		= 16,
+	BI_ECHON	= 17
 };
 
 typedef struct s_node
@@ -76,6 +77,12 @@ typedef struct s_input
 	char	*buf;
 	int		status;
 }	t_input;
+
+typedef	struct s_env_var
+{
+	char	*name;
+	char	*value;
+}	t_env_var;
 
 // global var
 int						g_status;
