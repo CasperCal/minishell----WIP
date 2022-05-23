@@ -8,6 +8,10 @@
 # include <sys/types.h>
 # include <dirent.h>
 # include <sys/ioctl.h>
+# include <sys/types.h>
+# include <sys/stat.h>
+# include <sys/wait.h>
+# include <fcntl.h>
 # include <termios.h>
 # include <curses.h>
 # include <term.h>
@@ -36,7 +40,8 @@ enum tokens
 	REDIR_IN	= 6,
 	REDIR_AP	= 7,
 	REDIR_HD	= 8,
-	PIPE		= 9
+	PIPE		= 9,
+	EQUAL		= 10
 };
 
 enum builtins
@@ -88,15 +93,21 @@ typedef	struct s_cell
 
 typedef struct s_input
 {
-	int		argc;
-	char	**argv;
-	char	**envp;
-	t_env	*envp_n;
-	t_node	*args;
-	char	*buf;
-	int		status;
+	int				argc;
+	char			**argv;
+	char			**envp;
+	t_env			*envp_n;
+	t_node			*args;
+	char			*buf;
+	struct builtin	*builtins;
+	int				status;
 }	t_input;
 
+struct builtin
+{
+	char	*name;
+	int		(*func)(t_input *data);
+};
 typedef	struct s_env_var
 {
 	char	*name;
@@ -133,11 +144,36 @@ t_env	*ft_free_envp(t_env *node);
 
 // utils
 char	*ft_strndup(char const *str, size_t size);
-char	**ft_split_op(char const *s, char c);
+int		error_check(int input, char *str, int n);
+char	*ft_strjoin_free(char *rest, char *buf);
+char	*ft_charjoin_free(char *line, char b);
 
-//signals
-void		sigint_handler(int sign_num);
+char	**get_address(char *cmd[], char *envp[]);
+char	*access_check(char *cmd[], char *envp[]);
+void	ft_execve(char *argv, char *envp[]);
+int		ft_open(char *file, int par);
+
+char	**ft_split_op(char const *s, char c);
+int		get_next_line(char **line);
 
 // minishell
+
+// execute
+int		pipex(int argc, char *argv[], char *envp[]);
+void	ft_heredoc(char *limiter);
+void	ft_fork(char *argv, char *envp[]);
+int		execute(t_input *data);
+
+// builtins
+int		yo_pwd(t_input *data);
+int		yo_cd(t_input *data);
+int		yo_echo(t_input *data);
+int		yo_export(t_input *data);
+int		yo_env(t_input *data);
+int		yo_unset(t_input *data);
+int		yo_exit(t_input *data);
+
+//signals
+void	sigint_handler(int sign_num);
 
 #endif
