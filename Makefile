@@ -16,6 +16,9 @@ SRC_FILES	= minishell.c \
 				ft_free.c \
 				ft_split_op.c \
 				signal.c \
+				execute.c \
+				builtins.c \
+				get_next_line.c \
 				parsing_utils.c \
 				parsing.c
 SRCS		= ${notdir ${SRC_FILES}}
