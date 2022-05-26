@@ -94,10 +94,16 @@ int		define_token(char *argv)
 		return (SEPAR);
 	else if (strncmp(argv, "=", 2) == 0)
 		return (EQUAL);
+	else if (strncmp(argv, "&&", 3) == 0)
+		return (AND);
+	else if (strncmp(argv, "||", 3) == 0)
+		return (OR);
 	else if (argv[0] == '\'')
 		return (QUOTE);
 	else if (argv[0] == '\"')
 		return (QUOTE_D);
+	else if (ft_strchr(argv, '*'))
+		return (ASTER);
 	else
 		return (WORD);
 }

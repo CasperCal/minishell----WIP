@@ -20,6 +20,7 @@ SRC_FILES	= minishell.c \
 				builtins.c \
 				get_next_line.c \
 				parsing_utils.c \
+				wildcard.c \
 				parsing.c
 SRCS		= ${notdir ${SRC_FILES}}
 

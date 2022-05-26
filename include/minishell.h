@@ -41,7 +41,10 @@ enum tokens
 	REDIR_AP	= 7,
 	REDIR_HD	= 8,
 	PIPE		= 9,
-	EQUAL		= 10
+	EQUAL		= 10,
+	ASTER		= 11,
+	AND			= 12,
+	OR			= 13
 };
 
 enum builtins
@@ -83,12 +86,12 @@ typedef	struct s_cell
 	struct s_cell	*prev;
 }	t_cell;
 
-/*typedef struct s_cell_list
+typedef struct s_cell_list
 {
 	struct s_cell		*cell;
 	struct s_cell_list	*next;
 	struct s_cell_list	*prev;
-}	t_cell_list;*/
+}	t_cell_list;
 
 
 typedef struct s_input
@@ -175,5 +178,8 @@ int		yo_exit(t_input *data);
 
 //signals
 void	sigint_handler(int sign_num);
+
+// others
+void	asterisks(t_input *data);
 
 #endif
