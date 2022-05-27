@@ -177,6 +177,7 @@ int	main(int argc, char *argv[], char *envp[])
 		check_field(&data.buf);
 		// printf("buf is %s\n", data.buf);
 		data_init(&data, envp);
+		asterisks(&data);
 		execute(&data);
 	}
 	return ((data.status >> 8) & 0xff);

@@ -1,10 +1,10 @@
-#include "minishell.h"
+#include "../include/minishell.h"
 
 void	asterisks(t_input *data)
 {
 	DIR				*dir;
-	t_node			*wild;
 	t_node			*tmp;
+	char			*hold;
 	char			*value;
 	struct dirent	*fname;
 	int				i;
@@ -16,17 +16,32 @@ void	asterisks(t_input *data)
 		perror("opendir");
 		exit (EXIT_FAILURE);
 	}
-	wild = NULL;
+	data->wild = NULL;
+	fname = NULL;
 	tmp = data->args;
 	i = 0;
-	while (data->args->type != ASTER)
-		++i;
-	len = ft_strlen(data->args->value[i]) - 1;
-	while (fname = readdir(dir))
+	while (tmp && tmp->type != ASTER)
 	{
-		if (ft_strnstr(fname->d_name, data->args->value[i], len))
+		++i;
+		tmp = tmp->next;
+	}
+	if (!tmp)
+		return ;
+	printf("i is %d\n", i);
+	len = ft_strlen(tmp->value) - 1;
+	hold = tmp->value;
+	printf("hold is %s\n", hold + 1);
+	while ((fname = readdir(dir)) != NULL)
+	{
+		printf("filename\n");
+		if (ft_strstr(fname->d_name, hold + 1))
 		{
-			value = ft_strdup
+			value = ft_strdup(fname->d_name);
+			printf("value is %s\n", value);
+			tmp = ft_token_new(ASTER, value);
+			ft_token_back(&data->wild, tmp);
 		}
 	}
+	closedir(dir);
+	ft_token_print(data->wild);
 }

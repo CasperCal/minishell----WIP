@@ -101,6 +101,7 @@ typedef struct s_input
 	char			**envp;
 	t_env			*envp_n;
 	t_node			*args;
+	t_node			*wild;
 	char			*buf;
 	struct builtin	*builtins;
 	int				status;
@@ -158,6 +159,7 @@ int		ft_open(char *file, int par);
 
 char	**ft_split_op(char const *s, char c);
 int		get_next_line(char **line);
+int		ft_strstr(char *str, char *to_find);
 
 // minishell
 
