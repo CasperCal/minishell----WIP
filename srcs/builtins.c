@@ -41,11 +41,11 @@ int	yo_cd(t_input *data)
 
 int	yo_echo(t_input *data)
 {
-	int		size;
-	int		i;
+	// int		size;
+	// int		i;
 
-	i = 0;
-	size = ft_token_size(data->args);
+	// i = 0;
+	// size = ft_token_size(data->args);
 	// printf("argv[1] is %s\n", data->argv[1]);
 	if (!data->argv[1])
 		write(1, "\n", 1);

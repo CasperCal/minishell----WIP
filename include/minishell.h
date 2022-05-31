@@ -119,7 +119,6 @@ typedef	struct s_env_var
 }	t_env_var;
 
 // global var
-int						g_status;
 
 // allocation check
 void	alloc_check(char **str);

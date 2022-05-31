@@ -161,9 +161,9 @@ void	data_init(t_input *data, char *envp[])
 int	main(int argc, char *argv[], char *envp[])
 {
 	t_input data;
-	int		exit_status;
+	// int		exit_status;
 
-	exit_status = 0;
+	// exit_status = 0;
 	if (argc != 1)
 		exit(EXIT_FAILURE);
 	(void) argv;

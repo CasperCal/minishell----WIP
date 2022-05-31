@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccaluwe <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: baltsaros <baltsaros@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 10:35:16 by ccaluwe           #+#    #+#             */
-/*   Updated: 2022/05/18 10:35:28 by ccaluwe          ###   ########.fr       */
+/*   Updated: 2022/05/31 12:58:17 by baltsaros        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
+int						g_status;
 
 /*static void	process(int sign_num)
 {
