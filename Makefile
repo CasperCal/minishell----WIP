@@ -14,7 +14,7 @@ SRC_FILES	= minishell.c \
 				nodes_2.c \
 				alloc_check.c \
 				ft_free.c \
-				ft_split_op.c \
+				ft_split_space.c \
 				signal.c \
 				execute.c \
 				builtins.c \

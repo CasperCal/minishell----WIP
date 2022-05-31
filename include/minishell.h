@@ -156,7 +156,7 @@ char	*access_check(char *cmd[], char *envp[]);
 void	ft_execve(char *argv, char *envp[]);
 int		ft_open(char *file, int par);
 
-char	**ft_split_op(char const *s, char c);
+char	**ft_split_space(char const *s, char *charset);
 int		get_next_line(char **line);
 int		ft_strstr(char *str, char *to_find);
 

@@ -92,8 +92,6 @@ int		define_token(char *argv)
 		return (PIPE);
 	else if (strncmp(argv, "$", 2) == 0)
 		return (SEPAR);
-	else if (strncmp(argv, "=", 2) == 0)
-		return (EQUAL);
 	else if (strncmp(argv, "&&", 3) == 0)
 		return (AND);
 	else if (strncmp(argv, "||", 3) == 0)
@@ -102,6 +100,8 @@ int		define_token(char *argv)
 		return (QUOTE);
 	else if (argv[0] == '\"')
 		return (QUOTE_D);
+	else if (ft_strchr(argv, '='))
+		return (EQUAL);
 	else if (ft_strchr(argv, '*'))
 		return (ASTER);
 	else
@@ -144,7 +144,7 @@ void	data_init(t_input *data, char *envp[])
 	create_envp(data, envp);
 	// ft_envp_print(data->envp_n);
 	// data->envp_n = ft_free_envp(data->envp_n);
-	data->argv = ft_split_op(data->buf, ' ');
+	data->argv = ft_split_space(data->buf, " \f\n\r\t\v");
 	data->argc = 0;
 	data->builtins = builtins;
 	while (data->argv[data->argc])
@@ -153,7 +153,7 @@ void	data_init(t_input *data, char *envp[])
 		++data->argc;
 	}
 	create_token(data);
-	// ft_token_print(data->args);
+	ft_token_print(data->args);
 	// data->args = ft_free_token(data->args);
 	// ft_free(data->argv);
 }
