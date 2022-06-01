@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split_space.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: baltsaros <baltsaros@student.42.fr>        +#+  +:+       +#+        */
+/*   By: abuzdin <abuzdin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/10 09:33:11 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/05/31 17:47:04 by baltsaros        ###   ########.fr       */
+/*   Updated: 2022/06/01 12:25:20 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,16 +41,12 @@ static size_t	check_str(char const *s, char *charset)
 		while (s[i] && check_charset(s[i], charset))
 			++i;
 		if (s[i])
-		{
 			++n;
-			printf("n is %lu, i is %lu\n", n, i);
-		}
 		if (s[i] == '"' || s[i] == '\'')
 		{
 			++i;
 			while (s[i] && s[i] != '"' && s[i] != '\'')
 				++i;
-			// ++i;
 		}
 		while (s[i] && !(check_charset(s[i], charset)))
 			++i;
@@ -104,7 +100,6 @@ char	**ft_split_space(char const *s, char *charset)
 		return (NULL);
 	i = 0;
 	size = check_str(s, charset);
-	printf("words to create is %lu\n", size);
 	spl = (char **)malloc(sizeof(*spl) * (size + 1));
 	if (!spl)
 		return (NULL);

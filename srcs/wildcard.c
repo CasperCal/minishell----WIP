@@ -20,6 +20,7 @@ void	asterisks(t_input *data)
 	}
 	data->wild = NULL;
 	fname = NULL;
+	before = NULL;
 	tmp = data->args;
 	i = 0;
 	while (tmp && tmp->type != ASTER)
@@ -41,9 +42,9 @@ void	asterisks(t_input *data)
 	printf("before is |%s|, after is |%s|\n", before, after);
 	while ((fname = readdir(dir)) != NULL)
 	{
-		if (ft_strstr(fname->d_name, before))
+		if (!ft_strncmp(fname->d_name, before, ft_strlen(before)))
 		{
-			if (ft_strstr(fname->d_name, after))
+			if (ft_strstr(fname->d_name, after) || !after[0])
 			{
 				value = ft_strdup(fname->d_name);
 				printf("value is %s\n", value);
