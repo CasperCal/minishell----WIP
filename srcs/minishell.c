@@ -117,7 +117,7 @@ void	create_token(t_input *data)
 	i = 0;
 	while (data->argv[i])
 	{
-		type = define_token(data->argv[i]);
+		// type = define_token(data->argv[i]);
 		tmp = ft_token_new(type, data->argv[i]);
 		ft_token_back(&data->args, tmp);
 		++i;
@@ -144,7 +144,7 @@ void	data_init(t_input *data, char *envp[])
 	create_envp(data, envp);
 	// ft_envp_print(data->envp_n);
 	// data->envp_n = ft_free_envp(data->envp_n);
-	data->argv = ft_split_space(data->buf, " \f\n\r\t\v");
+	data->argv = ft_split_space(data->buf, " \f\n\r\t\v\\;");
 	data->argc = 0;
 	data->builtins = builtins;
 	while (data->argv[data->argc])
