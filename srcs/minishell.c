@@ -78,49 +78,36 @@ void	create_envp(t_input *data, char *envp[])
 	}
 }
 
-int		define_token(char *argv)
-{
-	if (strncmp(argv, "<", 2) == 0)
-		return (REDIR_OUT);
-	else if (strncmp(argv, ">", 2) == 0)
-		return (REDIR_IN);
-	else if (strncmp(argv, "<<", 3) == 0)
-		return (REDIR_HD);
-	else if (strncmp(argv, ">>", 3) == 0)
-		return (REDIR_AP);
-	else if (strncmp(argv, "|", 2) == 0)
-		return (PIPE);
-	else if (strncmp(argv, "$", 2) == 0)
-		return (SEPAR);
-	else if (strncmp(argv, "&&", 3) == 0)
-		return (AND);
-	else if (strncmp(argv, "||", 3) == 0)
-		return (OR);
-	else if (argv[0] == '\'')
-		return (QUOTE);
-	else if (argv[0] == '\"')
-		return (QUOTE_D);
-	else if (ft_strchr(argv, '='))
-		return (EQUAL);
-	else if (ft_strchr(argv, '*'))
-		return (ASTER);
-	else
-		return (WORD);
-}
-
 void	create_token(t_input *data)
 {
 	t_node	*tmp;
-	int		i;
+	char	*value;
+	size_t	i;
+	size_t	start;
 	int		type;
 
 	i = 0;
-	while (data->argv[i])
+	start = 0;
+	while (data->buf[i])
 	{
-		// type = define_token(data->argv[i]);
-		tmp = ft_token_new(type, data->argv[i]);
+		while (check_charset(data->buf[i], " \f\n\r\t\v\\;"))
+			++i;
+		start = i;
+		while (data->buf[i] && !check_charset(data->buf[i], "\"$\'&<>=*| \f\n\r\t\v\\;()"))
+			++i;
+		type = WORD;
+		value = ft_strndup(data->buf + start, i - start);
+		tmp = ft_token_new(type, value);
 		ft_token_back(&data->args, tmp);
-		++i;
+		if (check_charset(data->buf[i], "\"$\'&<>=*|()"))
+		{
+			type = check_charset(data->buf[i], "\"$\'&<>=*|()");
+			value = ft_strndup(data->buf + i, 1);
+			tmp = ft_token_new(type, value);
+			ft_token_back(&data->args, tmp);
+			if (data->buf[i + 1] && data->buf[i + 1] != type)
+				++i;
+		}
 	}
 }
 
@@ -145,14 +132,15 @@ void	data_init(t_input *data, char *envp[])
 	// ft_envp_print(data->envp_n);
 	// data->envp_n = ft_free_envp(data->envp_n);
 	data->argv = ft_split_space(data->buf, " \f\n\r\t\v\\;");
-	data->argc = 0;
-	data->builtins = builtins;
-	while (data->argv[data->argc])
-	{
-		// printf("argv[%d] is |%s|\n", data->argc, data->argv[data->argc]);
-		++data->argc;
-	}
 	create_token(data);
+	data->argc = ft_token_size(data->args);
+	data->builtins = builtins;
+	// while (data->argv[data->argc])
+	// {
+	// 	// printf("argv[%d] is |%s|\n", data->argc, data->argv[data->argc]);
+	// 	++data->argc;
+	// }
+	printf("argc is %d\n", data->argc);
 	ft_token_print(data->args);
 	// data->args = ft_free_token(data->args);
 	// ft_free(data->argv);
@@ -177,7 +165,7 @@ int	main(int argc, char *argv[], char *envp[])
 		check_field(&data.buf);
 		// printf("buf is %s\n", data.buf);
 		data_init(&data, envp);
-		asterisks(&data);
+		// asterisks(&data);
 		execute(&data);
 	}
 	return ((data.status >> 8) & 0xff);

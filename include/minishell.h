@@ -32,32 +32,37 @@
 
 enum tokens
 {
-	SEPAR		= 1,
+	DOLLAR		= 36,
 	WORD		= 2,
-	QUOTE		= 3,
-	QUOTE_D		= 4,
-	REDIR_OUT	= 5,
-	REDIR_IN	= 6,
+	QUOTE		= 39,
+	QUOTE_D		= 34,
+	REDIR_OUT	= 60,
+	REDIR_IN	= 62,
 	REDIR_AP	= 7,
 	REDIR_HD	= 8,
-	PIPE		= 9,
-	EQUAL		= 10,
-	ASTER		= 11,
-	AND			= 12,
-	OR			= 13
+	DELIM		= 9,
+	PIPE		= 124,
+	EQUAL		= 61,
+	ASTER		= 42,
+	AND			= 13,
+	OR			= 14,
+	BR_L		= 40,
+	BR_R		= 41,
+	AMPER		= 38,
+	APOST		= 44
 };
 
-enum builtins
-{
-	BI_ECHO		= 10,
-	BI_CD 		= 11,
-	BI_PWD		= 12,
-	BI_EXPORT	= 13,
-	BI_UNSET	= 14,
-	BI_ENV		= 15,
-	BI_EXIT		= 16,
-	BI_ECHON	= 17
-};
+// enum builtins
+// {
+// 	BI_ECHO		= 10,
+// 	BI_CD 		= 11,
+// 	BI_PWD		= 12,
+// 	BI_EXPORT	= 13,
+// 	BI_UNSET	= 14,
+// 	BI_ENV		= 15,
+// 	BI_EXIT		= 16,
+// 	BI_ECHON	= 17
+// };
 
 typedef struct s_node
 {
@@ -159,6 +164,7 @@ int		ft_open(char *file, int par);
 char	**ft_split_space(char const *s, char *charset);
 int		get_next_line(char **line);
 int		ft_strstr(char *str, char *to_find);
+int		check_charset(char c, char *charset);
 
 // minishell
 

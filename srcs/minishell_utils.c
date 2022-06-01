@@ -205,3 +205,20 @@ int	ft_strstr(char *str, char *to_find)
 	}
 	return (0);
 }
+
+int	check_charset(char c, char *charset)
+{
+	unsigned int	i;
+
+	i = 0;
+	
+	if (!charset)
+		return (0);
+	while (charset[i])
+	{
+		if (charset[i] == c)
+			return (charset[i]);
+		++i;
+	}
+	return (0);
+}

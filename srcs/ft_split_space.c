@@ -6,28 +6,11 @@
 /*   By: abuzdin <abuzdin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/10 09:33:11 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/06/01 12:25:20 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/06/01 16:08:00 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-
-static int	check_charset(char c, char *charset)
-{
-	unsigned int	i;
-
-	i = 0;
-	
-	if (!charset)
-		return (0);
-	while (charset[i])
-	{
-		if (charset[i] == c)
-			return (1);
-		++i;
-	}
-	return (0);
-}
 
 static size_t	check_str(char const *s, char *charset)
 {
