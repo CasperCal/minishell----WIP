@@ -91,22 +91,27 @@ void	create_token(t_input *data)
 	while (data->buf[i])
 	{
 		while (check_charset(data->buf[i], " \f\n\r\t\v\\;"))
+		{
+			printf("[%lu] %c\n", i, data->buf[i]);
 			++i;
+		}
 		start = i;
 		while (data->buf[i] && !check_charset(data->buf[i], "\"$\'&<>=*| \f\n\r\t\v\\;()"))
 			++i;
-		type = WORD;
-		value = ft_strndup(data->buf + start, i - start);
-		tmp = ft_token_new(type, value);
-		ft_token_back(&data->args, tmp);
+		if (i != start)
+		{
+			type = WORD;
+			value = ft_strndup(data->buf + start, i - start);
+			tmp = ft_token_new(type, value);
+			ft_token_back(&data->args, tmp);
+		}
 		if (check_charset(data->buf[i], "\"$\'&<>=*|()"))
 		{
 			type = check_charset(data->buf[i], "\"$\'&<>=*|()");
 			value = ft_strndup(data->buf + i, 1);
 			tmp = ft_token_new(type, value);
 			ft_token_back(&data->args, tmp);
-			if (data->buf[i + 1] && data->buf[i + 1] != type)
-				++i;
+			++i;
 		}
 	}
 }
