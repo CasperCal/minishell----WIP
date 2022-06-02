@@ -222,3 +222,16 @@ int	check_charset(char c, char *charset)
 	}
 	return (0);
 }
+
+int	check_envp(char *c, t_env *envp_n, int n)
+{
+	if (!envp_n)
+		return (0);
+	while (envp_n)
+	{
+		if (ft_strncmp(c, envp_n->type, n))
+			return (1);
+		envp_n = envp_n->next;
+	}
+	return (0);
+}

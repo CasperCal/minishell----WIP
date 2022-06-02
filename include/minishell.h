@@ -36,8 +36,8 @@ enum tokens
 	WORD		= 2,
 	QUOTE		= 39,
 	QUOTE_D		= 34,
-	REDIR_OUT	= 60,
-	REDIR_IN	= 62,
+	REDIR_OUT	= 62,
+	REDIR_IN	= 60,
 	REDIR_AP	= 7,
 	REDIR_HD	= 8,
 	DELIM		= 9,
@@ -102,6 +102,8 @@ typedef struct s_cell_list
 typedef struct s_input
 {
 	int				argc;
+	int				in;
+	int				out;
 	char			**argv;
 	char			**envp;
 	t_env			*envp_n;
@@ -165,6 +167,7 @@ char	**ft_split_space(char const *s, char *charset);
 int		get_next_line(char **line);
 int		ft_strstr(char *str, char *to_find);
 int		check_charset(char c, char *charset);
+int		check_envp(char *c, t_env *envp_n, int n);
 
 // minishell
 

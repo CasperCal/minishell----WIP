@@ -100,6 +100,12 @@ int	execute(t_input *data)
 		data->builtins[1].func(data);
 	else if (ft_strncmp(data->argv[0], "echo", 5) == 0)
 		data->builtins[2].func(data);
+	else if (ft_strncmp(data->argv[0], "export", 7) == 0)
+		data->builtins[3].func(data);
+	else if (ft_strncmp(data->argv[0], "env", 4) == 0)
+		data->builtins[4].func(data);
+	else if (ft_strncmp(data->argv[0], "unset", 6) == 0)
+		data->builtins[5].func(data);
 	else if (ft_strncmp(data->argv[0], "exit", 5) == 0)
 		data->builtins[6].func(data);
 	else

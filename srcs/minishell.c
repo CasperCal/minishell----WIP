@@ -127,19 +127,25 @@ struct builtin builtins[] =
 	{"exit", &yo_exit}
 };
 
-void	data_init(t_input *data, char *envp[])
+void	envp_init(t_input *data, char *envp[])
+{
+	data->envp = envp;
+	data->envp_n = NULL;
+	data->args = NULL;
+	create_envp(data, envp);
+	// ft_envp_print(data->envp_n);
+}
+
+void	data_init(t_input *data)
 {
 	t_node *tmp;
 	int		i;
 
 	i = 0;
-	data->envp = envp;
 	data->status = 0;
-	data->envp_n = NULL;
+	data->in = 0;
+	data->out = 1;
 	data->args = NULL;
-	create_envp(data, envp);
-	// ft_envp_print(data->envp_n);
-	// data->envp_n = ft_free_envp(data->envp_n);
 	create_token(data);
 	tmp = data->args;
 	data->argc = ft_token_size(data->args);
@@ -155,8 +161,6 @@ void	data_init(t_input *data, char *envp[])
 	data->builtins = builtins;
 	printf("argc is %d\n", data->argc);
 	ft_token_print(data->args);
-	// data->args = ft_free_token(data->args);
-	// ft_free(data->argv);
 }
 
 int	main(int argc, char *argv[], char *envp[])
@@ -170,6 +174,7 @@ int	main(int argc, char *argv[], char *envp[])
 	(void) argv;
 	signal(SIGINT, sigint_handler);
 	signal(SIGQUIT, sigint_handler);
+	envp_init(&data, envp);
 	while (1)
 	{
 		data.buf = readline("yo> ");
@@ -177,9 +182,10 @@ int	main(int argc, char *argv[], char *envp[])
 			add_history(data.buf);
 		check_field(&data.buf);
 		// printf("buf is %s\n", data.buf);
-		data_init(&data, envp);
+		data_init(&data);
 		// asterisks(&data);
 		execute(&data);
+		ft_free_token(data.args);
 	}
 	return ((data.status >> 8) & 0xff);
 }

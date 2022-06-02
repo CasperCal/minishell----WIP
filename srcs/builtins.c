@@ -58,24 +58,86 @@ int	yo_echo(t_input *data)
 
 int		yo_export(t_input *data)
 {
-	data->status = 0;
+	t_env	*tmp;
+	int		i;
+
+	i = 1;
+	tmp = NULL;
+	while (data->argv[i])
+	{
+		// if (data->argv[i][0] == '=' || check_envp(data->argv[i], data->envp_n, ft_strlen(data->argv[i])))
+		// 	++i;
+		// if (!data->argv[i])
+		// 	break ;
+		printf("i is %d\n", i);
+		if (!data->argv[i + 1] || (data->argv[i + 1] && data->argv[i + 1][0] != '='))
+			tmp = ft_envp_new(data->argv[i], NULL);
+		else if (data->argv[i + 2])
+		{
+			tmp = ft_envp_new(data->argv[i], data->argv[i + 2]);
+			i += 2;
+		}
+		else
+		{
+			tmp = ft_envp_new(data->argv[i], ft_strdup(""));
+			i += 2;
+		}
+		++i;
+		ft_envp_back(&data->envp_n, tmp);
+	}
+	tmp = data->envp_n;
+	while (tmp)
+	{
+		if (tmp->value)
+			printf("declare -x %s=\"%s\"\n", tmp->type, tmp->value);
+		else
+			printf("declare -x %s\n", tmp->type);
+		tmp = tmp->next;
+	}
 	return (0);
 }
 
 int		yo_env(t_input *data)
 {
-	data->status = 0;
+	t_env	*tmp;
+
+	tmp = data->envp_n;
+	while (tmp)
+	{
+		if (tmp->value)
+			printf("%s=%s\n", tmp->type, tmp->value);
+		else
+			printf("%s\n", tmp->type);
+		tmp = tmp->next;
+	}
 	return (0);
 }
 
 int		yo_unset(t_input *data)
 {
-	data->status = 0;
+	t_env	*tmp;
+	int		i;
+
+	i = 1;
+	tmp = data->envp_n;
+	while (data->argv[i])
+	{
+		if (check_envp(data->argv[i], data->envp_n, ft_strlen(data->argv[i])))
+		{
+			while (ft_strncmp(data->argv[i], tmp->type, ft_strlen(data->argv[i]) + 1))
+			{
+				tmp = tmp->next;
+			}
+			tmp = ft_envp_del(tmp);
+		++i;
+		}
+	}
 	return (0);
 }
 
 int		yo_exit(t_input *data)
 {
-	data->status = 0;
-	exit (0);
+	ft_free_envp(data->envp_n);
+	ft_free_token(data->args);
+	exit (data->status);
 }
