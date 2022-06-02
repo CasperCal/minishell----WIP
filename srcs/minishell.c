@@ -129,6 +129,10 @@ struct builtin builtins[] =
 
 void	data_init(t_input *data, char *envp[])
 {
+	t_node *tmp;
+	int		i;
+
+	i = 0;
 	data->envp = envp;
 	data->status = 0;
 	data->envp_n = NULL;
@@ -136,15 +140,19 @@ void	data_init(t_input *data, char *envp[])
 	create_envp(data, envp);
 	// ft_envp_print(data->envp_n);
 	// data->envp_n = ft_free_envp(data->envp_n);
-	data->argv = ft_split_space(data->buf, " \f\n\r\t\v\\;");
 	create_token(data);
+	tmp = data->args;
 	data->argc = ft_token_size(data->args);
+	data->argv = malloc(sizeof(data->argv) * (data->argc + 1));
+	while (tmp)
+	{
+		data->argv[i] = tmp->value;
+		// printf("argv[%d] is |%s|\n", i, data->argv[i]);
+		tmp = tmp->next;
+		++i;
+	}
+	data->argv[i] = NULL;
 	data->builtins = builtins;
-	// while (data->argv[data->argc])
-	// {
-	// 	// printf("argv[%d] is |%s|\n", data->argc, data->argv[data->argc]);
-	// 	++data->argc;
-	// }
 	printf("argc is %d\n", data->argc);
 	ft_token_print(data->args);
 	// data->args = ft_free_token(data->args);
