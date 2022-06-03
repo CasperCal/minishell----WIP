@@ -101,22 +101,20 @@ void	create_token(t_input *data)
 	}
 }
 
-struct builtin builtins[] =
-{
-	{"pwd", &yo_pwd},
-	{"cd", &yo_cd},
-	{"echo", &yo_echo},
-	{"export", &yo_export},
-	{"env", &yo_env},
-	{"unset", &yo_unset},
-	{"exit", &yo_exit}
-};
-
 void	envp_init(t_input *data, char *envp[])
 {
+	static struct builtin builtins[] =
+	{
+		{"pwd", &yo_pwd},
+		{"cd", &yo_cd},
+		{"echo", &yo_echo},
+		{"export", &yo_export},
+		{"env", &yo_env},
+		{"unset", &yo_unset},
+		{"exit", &yo_exit}
+	};
 	data->envp = envp;
 	data->envp_n = NULL;
-	data->args = NULL;
 	data->type = NULL;
 	data->value = NULL;
 	data->tmp = NULL;
@@ -124,6 +122,7 @@ void	envp_init(t_input *data, char *envp[])
 	data->j = 0;
 	data->envp_tmp = NULL;
 	data->node_tmp = NULL;
+	data->builtins = builtins;
 	create_envp(data, envp);
 	// ft_envp_print(data->envp_n);
 }
@@ -150,7 +149,6 @@ void	data_init(t_input *data)
 		++i;
 	}
 	data->argv[i] = NULL;
-	data->builtins = builtins;
 	// ft_token_print(data->args);
 }
 

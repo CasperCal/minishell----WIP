@@ -51,12 +51,29 @@ int	yo_echo(t_input *data)
 		++i;
 		while (data->argv[i])
 		{
+			if (ft_strncmp(data->argv[i], "$?", 3) == 0)
+			{
+				free(data->argv[i]);
+				data->argv[i] = ft_strdup(ft_itoa(data->status));
+			}
 			printf("%s", data->argv[i]);
 			++i;
 		}
 	}
 	else
-		ft_printf("%s\n", data->buf + 5);
+	{
+		while (data->argv[i])
+		{
+			if (ft_strncmp(data->argv[i], "$?", 3) == 0)	// need to merge two tokens for this to work
+			{
+				free(data->argv[i]);
+				data->argv[i] = ft_strdup(ft_itoa(data->status));
+			}
+			printf("%s", data->argv[i]);
+			++i;
+		}
+		printf("\n");
+	}
 	return (0);
 }
 
@@ -107,14 +124,15 @@ int		yo_env(t_input *data)
 	t_env	*tmp;
 
 	tmp = data->envp_n;
-	if (data->argv[2] && data->argv[1][0] != '|')		// neeed to find a better way to display error
+	if (data->argv[1] && data->argv[1][0] != '|')		// neeed to find a better way to display error
 	{
 		data->status = 127;
 		write(2, "env: ", 5);
 		write(2, data->argv[1], ft_strlen(data->argv[1]));
-		write(2, "No such file or directory\n", 26);
+		write(2, ": No such file or directory\n", 28);
 		return (data->status);
 	}
+	printf("env\n");
 	while (tmp)
 	{
 		if (tmp->value)

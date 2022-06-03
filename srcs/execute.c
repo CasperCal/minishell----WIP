@@ -80,23 +80,21 @@ int	pipex(int argc, char *argv[], char *envp[])
 int	execute(t_input *data)
 {
 	int	pid;
+	int	i;
 
 	pid = 0;
-	if (ft_strncmp(data->argv[0], "pwd", 4) == 0)
-		data->builtins[0].func(data);
-	else if (ft_strncmp(data->argv[0], "cd", 3) == 0)
-		data->builtins[1].func(data);
-	else if (ft_strncmp(data->argv[0], "echo", 5) == 0)
-		data->builtins[2].func(data);
-	else if (ft_strncmp(data->argv[0], "export", 7) == 0)
-		data->builtins[3].func(data);
-	else if (ft_strncmp(data->argv[0], "env", 4) == 0)
-		data->builtins[4].func(data);
-	else if (ft_strncmp(data->argv[0], "unset", 6) == 0)
-		data->builtins[5].func(data);
-	else if (ft_strncmp(data->argv[0], "exit", 5) == 0)
-		data->builtins[6].func(data);
-	else
+	i = 0;
+	while (i < 7)
+	{
+		if (ft_strncmp(data->argv[0], data->builtins[i].name, ft_strlen(data->builtins[i].name) + 1))
+			++i;
+		else
+		{
+			data->builtins[i].func(data);
+			break;
+		}
+	}
+	if (i >= 7)
 	{
 		pid = fork();
 		if (pid == 0)

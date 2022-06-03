@@ -34,6 +34,7 @@ enum tokens
 {
 	DOLLAR		= 36,
 	WORD		= 2,
+	WORD_AST	= 2,
 	QUOTE		= 39,
 	QUOTE_D		= 34,
 	REDIR_OUT	= 62,

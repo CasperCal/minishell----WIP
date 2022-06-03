@@ -24,6 +24,7 @@ RM		= rm -f
 RMF		= rm -rf
 CFLAGS	= -Wall -Wextra -Werror
 
+all:		${NAME}
 
 ${OBJ_DIR}/%.o : %.c
 			@mkdir -p ${OBJ_DIR}
@@ -31,8 +32,6 @@ ${OBJ_DIR}/%.o : %.c
 			@${GCC} ${CFLAGS} -c $< ${INCS} -o $@
 
 # @echo "${C_YELLOW_B}Compiling libft...${C_RESET}";
-
-all:		${NAME}
 
 ${NAME}:	${OBJS}
 			@${LIB} ${NAME} ${OBJS} 
