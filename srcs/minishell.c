@@ -174,7 +174,7 @@ int	main(int argc, char *argv[], char *envp[])
 		check_field(&data.buf);
 		// printf("buf is %s\n", data.buf);
 		data_init(&data);
-		// asterisks(&data);
+		asterisks(&data);
 		execute(&data);
 		// ft_free_token(data.args);
 	}
