@@ -2,6 +2,7 @@ C_PURPLE_B		=\033[1;95m
 C_YELLOW_B		=\033[1;33m
 C_RED_B			=\033[1;31m
 C_WHITE			=\033[0;97m
+C_GREEN			=\033[0;32m
 C_GREEN_B		=\033[1;32m
 C_RESET			=\033[0m
 
@@ -39,12 +40,12 @@ all:		libft ${NAME}
 
 ${OBJ_DIR}/%.o: ${SRC_DIR}/%.c
 			@mkdir -p ${OBJ_DIR}
-			@echo "${C_YELLOW_B}Compiling minishell...${C_RESET}";
+			@printf "${C_GREEN}.${C_RESET}";
 			@${GCC} ${CFLAGS} -c $< ${INCS} -o $@
 
 ${NAME}:	${OBJS} 
 			@${GCC} ${OBJS} ${INCS} libft/libft.a -lreadline -o ${NAME}
-			@echo "${C_GREEN_B}Finished!${C_RESET}";
+			@printf "\n${C_GREEN_B}Finished!${C_RESET}\n";
 
 libft:
 			@make -C ./libft
@@ -66,6 +67,5 @@ fclean:		clean
 			@echo "${C_RED_B}Minishell program has been deleted!${C_RESET}";
 
 re:			fclean all
-			@echo "${C_PURPLE_B}Recompiling!${C_RESET}";
 
 .PHONY:		all clean fclean libft re .c.o
