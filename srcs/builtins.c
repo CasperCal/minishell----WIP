@@ -41,16 +41,20 @@ int	yo_cd(t_input *data)
 
 int	yo_echo(t_input *data)
 {
-	// int		size;
-	// int		i;
+	int		i;
 
-	// i = 0;
-	// size = ft_token_size(data->args);
-	// printf("argv[1] is %s\n", data->argv[1]);
+	i = 1;
 	if (!data->argv[1])
 		write(1, "\n", 1);
-	else if (strncmp(data->argv[1], "-n", 3) == 0)
-		ft_printf("%s", data->buf + 8);
+	else if (strncmp(data->argv[1], "-n", 2) == 0)
+	{
+		++i;
+		while (data->argv[i])
+		{
+			printf("%s", data->argv[i]);
+			++i;
+		}
+	}
 	else
 		ft_printf("%s\n", data->buf + 5);
 	return (0);
@@ -63,13 +67,12 @@ int		yo_export(t_input *data)
 
 	i = 1;
 	tmp = NULL;
-	while (data->argv[i])
+	while (data->argv[i])	// need to manage duplicates
 	{
 		// if (data->argv[i][0] == '=' || check_envp(data->argv[i], data->envp_n, ft_strlen(data->argv[i])))
 		// 	++i;
 		// if (!data->argv[i])
 		// 	break ;
-		printf("i is %d\n", i);
 		if (!data->argv[i + 1] || (data->argv[i + 1] && data->argv[i + 1][0] != '='))
 			tmp = ft_envp_new(data->argv[i], NULL);
 		else if (data->argv[i + 2])
@@ -85,6 +88,8 @@ int		yo_export(t_input *data)
 		++i;
 		ft_envp_back(&data->envp_n, tmp);
 	}
+	if (data->argc > 1)
+		return (0);
 	tmp = data->envp_n;
 	while (tmp)
 	{
@@ -102,6 +107,14 @@ int		yo_env(t_input *data)
 	t_env	*tmp;
 
 	tmp = data->envp_n;
+	if (data->argv[2] && data->argv[1][0] != '|')		// neeed to find a better way to display error
+	{
+		data->status = 127;
+		write(2, "env: ", 5);
+		write(2, data->argv[1], ft_strlen(data->argv[1]));
+		write(2, "No such file or directory\n", 26);
+		return (data->status);
+	}
 	while (tmp)
 	{
 		if (tmp->value)

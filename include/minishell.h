@@ -49,7 +49,8 @@ enum tokens
 	BR_L		= 40,
 	BR_R		= 41,
 	AMPER		= 38,
-	APOST		= 44
+	APOST		= 44,
+	BACKSL		= 92
 };
 
 // enum builtins
@@ -98,9 +99,15 @@ typedef struct s_cell_list
 	struct s_cell_list	*prev;
 }	t_cell_list;
 
-
 typedef struct s_input
 {
+	int				i;
+	int				j;
+	char			*tmp;
+	char			*type;
+	char			*value;
+	t_env			*envp_tmp;
+	t_node			*node_tmp;
 	int				argc;
 	int				in;
 	int				out;

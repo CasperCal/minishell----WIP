@@ -1,5 +1,24 @@
 #include "../include/minishell.h"
 
+int		read_after(char **buf, char *msg, char c)
+{
+	char	*tmp;
+
+	while (1)
+	{
+		tmp = readline(msg);
+		*buf = ft_charjoin_free(*buf, '\n');
+		*buf = ft_strjoin_free(*buf, tmp);
+		if (ft_strchr(tmp, c))
+		{
+			free(tmp);
+			break;
+		}
+		free(tmp);
+	}
+	return (0);
+}
+
 int		check_field(char **buf)
 {
 	int		i;
@@ -20,35 +39,9 @@ int		check_field(char **buf)
 		++i;
 	}
 	if (quote && quote % 2 != 0)
-	{
-		while (1)
-		{
-			tmp = readline("quote>");
-			*buf = ft_charjoin_free(*buf, '\n');
-			*buf = ft_strjoin_free(*buf, tmp);
-			if (ft_strchr(tmp, '\''))
-			{
-				free(tmp);
-				break;
-			}
-			free(tmp);
-		}
-	}
+		read_after(buf, "quote>", '\'');
 	else if (quote_d &&quote_d % 2 != 0)
-	{
-		while (1)
-		{
-			tmp = readline("dquote>");
-			*buf = ft_charjoin_free(*buf, '\n');
-			*buf = ft_strjoin_free(*buf, tmp);
-			if (ft_strchr(tmp, '\"'))
-			{
-				free(tmp);
-				break;
-			}
-			free(tmp);
-		}
-	}
+		read_after(buf, "dquote>", '\"');
 	return (0);
 }
 
@@ -57,9 +50,6 @@ void	create_envp(t_input *data, char *envp[])
 	int		i;
 	int		start;
 	int		end;
-	char	*type;
-	char	*value;
-	t_env	*tmp;
 
 	i = 0;
 	while (envp[i])
@@ -70,18 +60,16 @@ void	create_envp(t_input *data, char *envp[])
 			++start;
 		while (envp[i][end])
 			++end;
-		type = ft_strndup(envp[i], start);
-		value = ft_strndup(envp[i] + start + 1, end - start - 1);
-		tmp = ft_envp_new(type, value);
-		ft_envp_back(&data->envp_n, tmp);
+		data->type = ft_strndup(envp[i], start);
+		data->value = ft_strndup(envp[i] + start + 1, end - start - 1);
+		data->envp_tmp = ft_envp_new(data->type, data->value);
+		ft_envp_back(&data->envp_n, data->envp_tmp);
 		++i;
 	}
 }
 
 void	create_token(t_input *data)
 {
-	t_node	*tmp;
-	char	*value;
 	size_t	i;
 	size_t	start;
 	int		type;
@@ -90,27 +78,24 @@ void	create_token(t_input *data)
 	start = 0;
 	while (data->buf[i])
 	{
-		while (check_charset(data->buf[i], " \f\n\r\t\v\\;"))
-		{
-			printf("[%lu] %c\n", i, data->buf[i]);
+		while (check_charset(data->buf[i], " \f\n\r\t\v;"))
 			++i;
-		}
 		start = i;
 		while (data->buf[i] && !check_charset(data->buf[i], "\"$\'&<>=*| \f\n\r\t\v\\;()"))
 			++i;
 		if (i != start)
 		{
 			type = WORD;
-			value = ft_strndup(data->buf + start, i - start);
-			tmp = ft_token_new(type, value);
-			ft_token_back(&data->args, tmp);
+			data->value = ft_strndup(data->buf + start, i - start);
+			data->node_tmp = ft_token_new(type, data->value);
+			ft_token_back(&data->args, data->node_tmp);
 		}
-		if (check_charset(data->buf[i], "\"$\'&<>=*|()"))
+		if (check_charset(data->buf[i], "\"$\'&<>=*|()\\"))
 		{
 			type = check_charset(data->buf[i], "\"$\'&<>=*|()");
-			value = ft_strndup(data->buf + i, 1);
-			tmp = ft_token_new(type, value);
-			ft_token_back(&data->args, tmp);
+			data->value = ft_strndup(data->buf + i, 1);
+			data->node_tmp = ft_token_new(type, data->value);
+			ft_token_back(&data->args, data->node_tmp);
 			++i;
 		}
 	}
@@ -132,6 +117,13 @@ void	envp_init(t_input *data, char *envp[])
 	data->envp = envp;
 	data->envp_n = NULL;
 	data->args = NULL;
+	data->type = NULL;
+	data->value = NULL;
+	data->tmp = NULL;
+	data->i = 0;
+	data->j = 0;
+	data->envp_tmp = NULL;
+	data->node_tmp = NULL;
 	create_envp(data, envp);
 	// ft_envp_print(data->envp_n);
 }
@@ -159,8 +151,7 @@ void	data_init(t_input *data)
 	}
 	data->argv[i] = NULL;
 	data->builtins = builtins;
-	printf("argc is %d\n", data->argc);
-	ft_token_print(data->args);
+	// ft_token_print(data->args);
 }
 
 int	main(int argc, char *argv[], char *envp[])
@@ -185,7 +176,7 @@ int	main(int argc, char *argv[], char *envp[])
 		data_init(&data);
 		// asterisks(&data);
 		execute(&data);
-		ft_free_token(data.args);
+		// ft_free_token(data.args);
 	}
 	return ((data.status >> 8) & 0xff);
 }

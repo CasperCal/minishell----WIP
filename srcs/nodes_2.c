@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 11:40:56 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/06/02 17:08:45 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/06/03 10:05:20 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,8 @@ t_env	*ft_envp_del(t_env *node)
 		node = node->next;
 		node->prev = NULL;
 	}
-	free(tmp->value);
 	free(tmp->type);
+	free(tmp->value);
 	free(tmp);
 	return (node);
 }
